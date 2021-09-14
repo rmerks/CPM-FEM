@@ -357,46 +357,52 @@ int main(int argc, char *argv[])
         const char * fcstr = fs.c_str();
         
         
-        
         if (!(incr%(par.STRIDE))) {
-            PlotCPM plot((par.NVX)*(par.PIXPERVOX)+3*par.WIDTHCOLORBAR,par.NVY*(par.PIXPERVOX));
-            char fname[200];
-            sprintf(fname,fcstr,incr);
-            
-            if(par.PRINCFIELD | par.STRAINFIELD){
-                plot.CalculateStrainField(pn);}
-            
-            plot.PlotHueStrainField(par.STRAINFIELD);
-            
-            if(par.PRINCFIELD){
-                plot.PlotPrincipleStrainField(pv);}
-            
-            plot.Plot(pv); //for art figure
-            
-            if(par.FORCEFIELD){
-                plot.CalculateForceField(pn);
-                plot.PlotNodalForces(pn);}
-            
-            if(par.COLORBAR){
-                plot.StrainColorBar();}
-            
-            
-            
-            cout << endl <<"Max Strain "<<plot.MaxStrainMagnitude() << endl;
-            //for (int n=0;n<NN;n++){cout << "n " << n << " fx "<< pn[n].fx << endl;}
-            //for (int n=0;n<NN;n++){cout << "n " << n << " fy "<< pn[n].fy << endl;}
-            
-            //for (int n=0;n<NN;n++){cout << "n " << n << " ux "<< pn[n].ux << endl;}
-            //for (int n=0;n<NN;n++){cout << "n " << n << " uy "<< pn[n].uy << endl;}
-            cout << fname << endl;
-            plot.Write(fname);
-            
-            //write_forces(pn,incr);
-            //write_disps(pn,incr);
-            //write_pstrain(pv,pn,incr);
-            
-            
-            
+            char *threrror;
+            try {
+                PlotCPM plot((par.NVX)*(par.PIXPERVOX)+3*par.WIDTHCOLORBAR,par.NVY*(par.PIXPERVOX));
+                
+                
+                char fname[200];
+                sprintf(fname,fcstr,incr);
+                
+                if(par.PRINCFIELD | par.STRAINFIELD){
+                    plot.CalculateStrainField(pn);}
+                
+                plot.PlotHueStrainField(par.STRAINFIELD);
+                
+                if(par.PRINCFIELD){
+                    plot.PlotPrincipleStrainField(pv);}
+                
+                plot.Plot(pv); //for art figure
+                
+                if(par.FORCEFIELD){
+                    plot.CalculateForceField(pn);
+                    plot.PlotNodalForces(pn);}
+                
+                if(par.COLORBAR){
+                    plot.StrainColorBar();}
+                
+                
+                
+                cout << endl <<"Max Strain "<<plot.MaxStrainMagnitude() << endl;
+                //for (int n=0;n<NN;n++){cout << "n " << n << " fx "<< pn[n].fx << endl;}
+                //for (int n=0;n<NN;n++){cout << "n " << n << " fy "<< pn[n].fy << endl;}
+                
+                //for (int n=0;n<NN;n++){cout << "n " << n << " ux "<< pn[n].ux << endl;}
+                //for (int n=0;n<NN;n++){cout << "n " << n << " uy "<< pn[n].uy << endl;}
+                cout << fname << endl;
+                plot.Write(fname);
+                
+                //write_forces(pn,incr);
+                //write_disps(pn,incr);
+                //write_pstrain(pv,pn,incr);
+                
+                
+            } catch (const char *threrror) {
+                fprintf(stderr,"%s\n", threrror);
+                exit(1);
+            }
         }
         for (int c=0;c<NRc;c++) {
             fprintf(of, "%d %lf %lf\n", c, (double)csumx[c]/(double)csize[c], (double)csumy[c]/(double)csize[c]);
