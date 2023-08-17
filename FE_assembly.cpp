@@ -120,7 +120,11 @@ void assembly(int* kcol, double* kval, double** klocal, VOX* pv)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int arrange_dofpos(int* dofpos, NOD* pn)
+//Dit is een functie die je grid (voxels) vertaald naaar een vector (het maakt niet uit hoe je finite element domein eruit ziet, het wordt simper vertaald
+//naar een lijst). Met deze lijst ga je makkelijk van je gridlijst naar de locatie in je vector waar het moet staan. In je gridlijst (pn) staat op oneven de y verandering
+//en op even de x verandering.
+
+int arrange_dofpos(int* dofpos, NOD* pn)//Dit is een functie die je grid (voxels) vertaald naaar een vector (het maakt niet uit hoe je finite element domein eruit ziet)
 {
 	int n, cnt;
 

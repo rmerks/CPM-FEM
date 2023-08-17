@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
         
         setlocale(LC_NUMERIC,"C");
         
-        
+          
         
         if(!par.WIDTHCOLORBAR){par.WIDTHCOLORBAR=par.NVX*par.PIXPERVOX/10;}
         if(!par.COLORBAR){par.WIDTHCOLORBAR=0;}
@@ -179,18 +179,41 @@ int main(int argc, char *argv[])
         // else { sranddev(); }
         
         mt_init();
-        pv = init_voxels();
-        pn = init_nodes();
+        pv = init_voxels(); //Grid zonder cellen
+        pn = init_nodes(); //Grid zonder krachten, deformaties of restricties
         
         startincr = 0;
         if(startincr==0) {
             
             if(par.CELLCOL){
                 NRc = init_cells(pv);
+                /*int vx=(par.NVX)/2;
+                int vy=par.NVY/2;
+                v = vx + vy*(par.NVX);
+                NRc++;
+                pv[v].ctag=NRc;      */ //Oude code voor zeer contractile cell in midden          
+                //Nieuwe code voor zeer contractile cell in midden :         
+                NRc++;
+                int v, vx, vy;
+                double r01, R, Rloc;
+                //double d; int dx, dy; // distance to center
+                R=min(par.NVX,par.NVY)/2+0.5;
+                for(vy=0; vy<par.NVY; vy++)
+                for(vx=0; vx<(par.NVX); vx++)
+                {
+                    v = vx + vy*(par.NVX);
+                    Rloc = sqrt((vx+0.5-R)*(vx+0.5-R)+(vy+0.5-R)*(vy+0.5-R));
+                    if(Rloc<5) // exclude outer rim
+                    {
+                            pv[v].ctag = NRc;
+                    }
+
+                }
+
             }
             
             
-            if(par.TWOCELL){
+            if(par.TWOCELL){ 
                 // two cells in the middle
                 int vx1=(par.NVX)/2-par.DISTWOCELLS, vx2=(par.NVX)/2+par.DISTWOCELLS;
                 int vy=par.NVY/2;
@@ -224,7 +247,7 @@ int main(int argc, char *argv[])
         
         if(NRc==2){par.TWOCELL=true;}
         
-        //write NRC
+        //write NRC DAPHNE: wat gebeurt hier?!
         stringstream nrcstr;
         string nrcstr1 = scurrentdir;
         string nrcstr2;
@@ -329,7 +352,7 @@ int main(int argc, char *argv[])
             
             
             cell_forces(pv,pn,csize,NRc);
-            
+            //set_forces(pn);
             
             
             // FEA part // parts of this can go out the loop depending on what changes
@@ -348,7 +371,8 @@ int main(int argc, char *argv[])
             //for(int i = 0; i < NN; i++){pn[i].ux = 1;pn[i].uy=3;}
             //free(u); free(f);
             delete [] u; delete [] f;
-            
+
+  
             stringstream fstr;
             string fstr2;
             fstr2="cpmfem%05d.png";
@@ -383,9 +407,18 @@ int main(int argc, char *argv[])
                 if(par.COLORBAR){
                     plot.StrainColorBar();}
                 
-                
-                
+                double Averagecellsize;
+                double sumcells;
+                double amountofcells;
+                //amountofcells = end(csize)-begin(csize);
+                sumcells = accumulate(csize, csize+NRc, sumcells);
+                Averagecellsize = sumcells/NRc;
+
                 cout << endl <<"Max Strain "<<plot.MaxStrainMagnitude() << endl;
+                cout << endl <<"Average cellsize "<<Averagecellsize << endl;
+                cout << endl <<"sumcells "<< sumcells << endl;
+                cout << endl <<"amount of cells "<< amountofcells << endl;
+                cout << endl <<"csize "<< *csize << endl;
                 //for (int n=0;n<NN;n++){cout << "n " << n << " fx "<< pn[n].fx << endl;}
                 //for (int n=0;n<NN;n++){cout << "n " << n << " fy "<< pn[n].fy << endl;}
                 

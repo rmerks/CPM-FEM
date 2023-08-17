@@ -19,8 +19,11 @@ void CPM_moves(VOX* pv, NOD* pn, int* csize, int *csumx, int *csumy, int incr)
 		//xt = (rand()*NV/RAND_MAX); // pick random element
 		xt = mt_random()%NV; // pick random element
 		xty = xt/(par.NVX); xtx = xt%(par.NVX);
-
-		if((xtx>0)&&(xtx<(par.NVX)-1)&&(xty>0)&&(xty<par.NVY-1)) // exclude outer rim
+		double R, Rloc;
+		R=min(par.NVX,par.NVY)/2+0.5;
+		Rloc=sqrt((xtx+0.5-R)*(xtx+0.5-R)+(xty+0.5-R)*(xty+0.5-R));
+		//if((xtx>0)&&(xtx<(par.NVX)-1)&&(xty>0)&&(xty<par.NVY-1)) // exclude outer rim
+		if((Rloc<R) && (Rloc >20))
 		{
 			nbs[0]=xt-1+(par.NVX); nbs[1]=xt+(par.NVX); nbs[2]=xt+1+(par.NVX);
 			nbs[7]=xt-1;                    nbs[3]=xt+1;

@@ -9,16 +9,16 @@ double calcdH(VOX* pv, NOD* pn, int* csize, int xt, int xs, int pick, int ttag, 
 
 	dHcontact = 0;
 	dHcontact = calcdHcontact(pv,xt,ttag,stag);
-    cerr << "dHcontact = " << dHcontact << endl;
+    //cerr << "dHcontact = " << dHcontact << endl;
 
 
 	dHvol = 0;
 	dHvol = calcdHvol(csize,ttag,stag);
-    cerr << "dHvol = " << dHvol << endl;
+    //cerr << "dHvol = " << dHvol << endl;
 
-	dHstr = 0;
+	dHstr = 0;// DAPHNE: kunnen deze 3 regels niet beter in de if statement hieronder staan?
 	dHstr = calcdHstrain(pn,xt,xs,pick,ttag,stag);
-    cerr << "dHstr = " << dHstr << endl;
+    //cerr << "dHstr = " << dHstr << endl;
 
 	dH = dHcontact+dHvol;
 	if(par.DUROTAXIS)

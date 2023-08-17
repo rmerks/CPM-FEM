@@ -14,7 +14,7 @@ void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc)
 	int v,vx,vy, cnttag;
 	int NRcelln,cellnodes[NN];
 	int i,j, n2;
-	double dnx,dny,forcex,forcey;
+	double dnx,dny,forcex,forcey,cellforc;
 
 	for(ny=1; ny<NNY-1; ny++)
    	for(nx=1; nx<NNX-1; nx++)
@@ -28,6 +28,17 @@ void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc)
 
 		for(c=0;c<NRc;c++)
 		{
+			cellforc=par.CELLFORCE;
+			
+			if(c==NRc-1)
+			{
+				cellforc=par.CELLFORCE*30;
+			}
+			else
+			{
+				cellforc=par.CELLFORCE;
+			}
+
 			// determine which nodes belong to cell c
 			NRcelln = 0;
 			for(ny=1; ny<NNY-1; ny++)
@@ -79,8 +90,8 @@ void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc)
 
 
 
-							forcex = par.CELLFORCE*dnx;
-							forcey = par.CELLFORCE*dny;
+							forcex = cellforc*dnx;
+							forcey = cellforc*dny;
 
 							pn[n].fx += forcex;
 							pn[n].fy += forcey;
@@ -92,8 +103,8 @@ void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc)
 					}
 					else
 					{
-						forcex = par.CELLFORCE*dnx;
-						forcey = par.CELLFORCE*dny;
+						forcex = cellforc*dnx;
+						forcey = cellforc*dny;
 
 						pn[n].fx += forcex;
 						pn[n].fy += forcey;
