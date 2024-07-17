@@ -5,7 +5,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc)
+void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc, bool cuforceon)
 {
 
 
@@ -32,7 +32,14 @@ void cell_forces(VOX* pv, NOD* pn, int* csize, int NRc)
 			
 			if(c==NRc-1)
 			{
-				cellforc=par.CELLFORCE*30;
+				if(cuforceon)
+				{
+					cellforc=par.CELLFORCE*par.CUFORCE;
+				}
+				else
+				{
+					cellforc=0;
+				}
 			}
 			else
 			{

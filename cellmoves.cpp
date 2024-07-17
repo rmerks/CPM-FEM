@@ -23,7 +23,8 @@ void CPM_moves(VOX* pv, NOD* pn, int* csize, int *csumx, int *csumy, int incr)
 		R=min(par.NVX,par.NVY)/2+0.5;
 		Rloc=sqrt((xtx+0.5-R)*(xtx+0.5-R)+(xty+0.5-R)*(xty+0.5-R));
 		//if((xtx>0)&&(xtx<(par.NVX)-1)&&(xty>0)&&(xty<par.NVY-1)) // exclude outer rim
-		if((Rloc<R) && (Rloc >20))
+		if((Rloc<R-2) && (Rloc>10))
+		//if(Rloc<R)
 		{
 			nbs[0]=xt-1+(par.NVX); nbs[1]=xt+(par.NVX); nbs[2]=xt+1+(par.NVX);
 			nbs[7]=xt-1;                    nbs[3]=xt+1;
@@ -216,7 +217,7 @@ void CalcPerimeters(VOX* pv, int* cper, int NRc){
 }
 
 
-void CalcLengths(VOX* pv,NOD* pn,double* clength,double* ecc,double* cangle,int NRc,int* csize,int* csumx, int* csumy){
+void CalcLengths(VOX* pv,NOD* pn,double* clength,double* ecc,double* cangle,int NRc,int* csize,int* csumx, int* csumy, double* radialpos){
 	for(int c=0;c<NRc;c++)
 	{
 		double Ixx = 0;    
@@ -230,7 +231,7 @@ void CalcLengths(VOX* pv,NOD* pn,double* clength,double* ecc,double* cangle,int 
 		double cmx = double(csumx[c])/csize[c];
 		double cmy = double(csumy[c])/csize[c];
 		double inertia[3],v1[2],v2[2];
-
+		double R;
 
 		for(int v = 0;v<NV;v++)
 		{
@@ -245,24 +246,24 @@ void CalcLengths(VOX* pv,NOD* pn,double* clength,double* ecc,double* cangle,int 
 
 		}
 
-	inertia[0] =  Ixx;
-	inertia[1] =  Iyy;
-	inertia[2] =  Ixy;
+		inertia[0] =  Ixx;
+		inertia[1] =  Iyy;
+		inertia[2] =  Ixy;
 
-
-
-	lambda=lambda_small=.0; get_princs(inertia,&lambda,&lambda_small,v1,v2,0);
+		lambda=lambda_small=.0; get_princs(inertia,&lambda,&lambda_small,v1,v2,0);
 			//lambda = 0.5*(Ixx+Iyy)+0.5*sqrt((Ixx+Iyy)*(Ixx+Iyy)+4*(Ixy*Ixy-Ixx*Iyy));
 			//lambda_small = 0.5*(Ixx+Iyy)-0.5*sqrt((Ixx+Iyy)*(Ixx+Iyy)+4*(Ixy*Ixy-Ixx*Iyy));
 			length = 4*sqrt(lambda/(double)csize[c]);
 
 			shortlength = 4*sqrt(lambda_small/(double)csize[c]);
 			e=sqrt(1-(shortlength/length)*(shortlength/length));
+
+		R=min(par.NVX,par.NVY)/2+0.5;
 		clength[c]=length;	
 		ecc[c]=e;
 		double PI = 3.14159265;
 		cangle[c] = atan2(v1[1],v1[0])*180/PI;
-
+		radialpos[c]= sqrt((cmx+0.5-R)*(cmx+0.5-R)+(cmy+0.5-R)*(cmy+0.5-R));
 
 	}
 

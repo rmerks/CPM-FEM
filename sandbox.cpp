@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         int NRc,c,v;
         int *csize,*csumx,*csumy;
         int *cper;
-        double *clength, *ecc, *cangle;
+        double *clength, *ecc, *cangle, *radialpos;
         int incr, startincr;
         int *cmxi, *cmyi;
         double* sqdis;
@@ -114,7 +114,16 @@ int main(int argc, char *argv[])
         FILE *ofpan;
         ofpan = fopen(anfcstr,"w");
         
-        
+        stringstream posstr;
+        string posstr1 = scurrentdir;
+        string posstr2;
+        posstr2 = "/radialposition.txt";
+        posstr<<posstr1<<posstr2;
+        string poss = posstr.str();
+        const char * posfcstr = poss.c_str();
+        FILE *ofpos;
+        ofpos = fopen(posfcstr,"w");
+
         stringstream tccstr;
         string tccstr1 = scurrentdir;
         string tccstr2;
@@ -287,6 +296,8 @@ int main(int argc, char *argv[])
         for(c=0;c<NRc;c++) {csumx[c]=0;}
         csumy = new int[NRc];
         for(c=0;c<NRc;c++) {csumy[c]=0;}
+        radialpos = new double[NRc]; //LATER: parameter toevoegen die dit reguleert
+        for(c=0;c<NRc;c++) {radialpos[c]=0;}
         cmxi = new int[NRc];
         cmyi = new int[NRc];
         
@@ -350,8 +361,15 @@ int main(int argc, char *argv[])
             //write_cells(pv,incr);
             
             
-            
-            cell_forces(pv,pn,csize,NRc);
+            if(incr<par.REMOVETIMECUFORCE)
+            {
+            cell_forces(pv,pn,csize,NRc,true);
+            }
+             if(incr>par.REMOVETIMECUFORCE-1)
+            {
+            cell_forces(pv,pn,csize,NRc,false);
+            }
+
             //set_forces(pn);
             
             
@@ -452,19 +470,21 @@ int main(int argc, char *argv[])
                 
                 if(par.WLENGTH)
                 {
-                    CalcLengths(pv,pn,clength,ecc,cangle,NRc,csize,csumx,csumy);
+                    CalcLengths(pv,pn,clength,ecc,cangle,NRc,csize,csumx,csumy,radialpos);
                     write_length(clength,NRc,incr,ofpl);
                 }
                 if(par.WECC)
                 {
-                    CalcLengths(pv,pn,clength,ecc,cangle,NRc,csize,csumx,csumy);
+                    CalcLengths(pv,pn,clength,ecc,cangle,NRc,csize,csumx,csumy,radialpos);
                     write_eccentricity(ecc,NRc,incr,ofpe);
                 }
                 
                 if(par.WANGLE)
                 {
-                    CalcLengths(pv,pn,clength,ecc,cangle,NRc,csize,csumx,csumy);
+                    CalcLengths(pv,pn,clength,ecc,cangle,NRc,csize,csumx,csumy,radialpos);
+                    //cout << endl <<"Radial position "<< *radialpos << endl;
                     write_cangle(cangle,NRc,incr,ofpan);
+                    write_radialpos(radialpos,NRc,incr,ofpos);
                 }
                 if(par.WAREA)
                 {
@@ -501,7 +521,7 @@ int main(int argc, char *argv[])
         delete [] pv; delete [] pn; delete [] klocal; delete [] kcol; delete [] kval; delete [] dofpos;
         delete [] csize; delete [] csumx; delete [] csumy;
         if(par.WRATIOPA){delete [] cper;} if(par.WLENGTH){delete [] clength;}
-        fclose(ofpl); fclose(ofppa); fclose(ofpe); fclose(ofpan); fclose(ofpa); fclose(ofpsd); fclose(ofptcc);
+        fclose(ofpl); fclose(ofppa); fclose(ofpe); fclose(ofpan); fclose(ofpa); fclose(ofpsd); fclose(ofptcc); fclose(ofpos);
     } catch (const char *threrror) {
         fprintf(stderr,"%s\n", threrror);
         exit(1);

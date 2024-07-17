@@ -172,8 +172,8 @@ double calcdHstrain(NOD* pn, int xt, int xs, int pick, int ttag, int stag)
 		//dHstrain -= sige((par.YOUNGS));
 
 		if(!par.COMPRESSINGSTIFF){
-			E1 = (par.YOUNGS); if(L1>0) {E1*=(1+L1/(par.STIFFENINGSTIFF));}
-			E2 = (par.YOUNGS); if(L2>0) {E2*=(1+L2/(par.STIFFENINGSTIFF));}
+			E1 = (par.YOUNGS); if(L1-par.STRAINSHIFT>0) {E1*=(1+(L1-par.STRAINSHIFT)/(par.STIFFENINGSTIFF));}
+			E2 = (par.YOUNGS); if(L2-par.STRAINSHIFT>0) {E2*=(1+(L2-par.STRAINSHIFT)/(par.STIFFENINGSTIFF));}
 			dHstrain -= sige(E1)*vmv1*vmv1 + sige(E2)*vmv2*vmv2;
 
 
@@ -181,8 +181,8 @@ double calcdHstrain(NOD* pn, int xt, int xs, int pick, int ttag, int stag)
 //cout << "E2 " << E2 << endl;
 		}
 		if(par.COMPRESSINGSTIFF){
-			E1 = (par.YOUNGS); if(L1>0) {E1*=(1+L1/(par.STIFFENINGSTIFF));}
-			E2 = (par.YOUNGS); if(L2>0) {E2*=(1+L2/(par.STIFFENINGSTIFF));}
+			E1 = (par.YOUNGS); if(L1>0) {E1*=(1+(L1)/(par.STIFFENINGSTIFF));}
+			E2 = (par.YOUNGS); if(L2>0) {E2*=(1+(L2)/(par.STIFFENINGSTIFF));}
 			if(L1<0) {E1*=(1-L1/(par.STIFFENINGSTIFF));}
 			if(L2<0) {E2*=(1-L2/(par.STIFFENINGSTIFF));}
 			dHstrain -= sige(E1)*vmv1*vmv1 + sige(E2)*vmv2*vmv2;

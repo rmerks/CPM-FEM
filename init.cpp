@@ -46,7 +46,8 @@ NOD* init_nodes(void)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-//Initialize cells that are only present on a cirkel (comment when working on square)
+//Initialize cells that are only present on a cirkel-equally distributed (comment when working on square)
+/*
 int init_cells(VOX* pv)
 {
     int v, vx, vy;
@@ -60,12 +61,46 @@ int init_cells(VOX* pv)
     {
         v = vx + vy*(par.NVX);
         Rloc = sqrt((vx+0.5-R)*(vx+0.5-R)+(vy+0.5-R)*(vy+0.5-R));
-        if((Rloc<R-par.BOUNDARYDIS) && (Rloc >30)) // exclude outer rim
+        //if((Rloc<R-par.BOUNDARYDIS) && (Rloc >10)) // exclude outer rim
+        if(Rloc<R-par.BOUNDARYDIS) // exclude outer rim
         {
             r01 = rand()/(double)RAND_MAX;
             //if(r01<par.CELLDENSITY/par.TARGETVOLUME)
-            if(r01<par.CELLDENSITY) 
+            //if(r01<par.CELLDENSITY) 
+            if((vx%30==0 && vy%30==15)||(vx%30==15 && vy%30==0) ) 
             {
+                NRc++;
+                pv[v].ctag = NRc;
+
+            }
+        }
+
+    }
+
+    return NRc;
+}
+*/
+//Initialize cells that are only present on a cirkel (comment when working on square)
+
+int init_cells(VOX* pv)
+{
+    int v, vx, vy;
+    int NRc;
+    double r01, R, Rloc;
+    //double d; int dx, dy; // distance to center
+    R=min(par.NVX,par.NVY)/2+0.5;
+    NRc = 0;
+    for(vy=0; vy<par.NVY; vy++)
+    for(vx=0; vx<(par.NVX); vx++)
+    {
+        v = vx + vy*(par.NVX);
+        Rloc = sqrt((vx+0.5-R)*(vx+0.5-R)+(vy+0.5-R)*(vy+0.5-R));
+        if((Rloc<R-par.BOUNDARYDIS) && (Rloc >10)) // exclude outer rim
+        //if(Rloc<R-par.BOUNDARYDIS) // exclude outer rim
+        {
+            r01 = rand()/(double)RAND_MAX;
+            //if(r01<par.CELLDENSITY/par.TARGETVOLUME)
+            if(r01<par.CELLDENSITY) {
                 NRc++;
                 pv[v].ctag = NRc;
 

@@ -1,10 +1,12 @@
 CPM parameters:
-SEED =  23020 / int
+SEED =  23025 / int
 NVX = 200 / int
 NVY = 200 / int
 MCS = NVX*NVY / int
 TARGETVOLUME = 50 / int
 CELLFORCE = 1 / double
+CUFORCE = 500 / double
+REMOVETIMECUFORCE = 1000 / double
 VOXSIZE = 0.0000025 / double
 NRINC = 1001 / int
 MAXNRITER = 10000 / int
@@ -12,29 +14,31 @@ ACCURACY = 0.00001 / double
 POISSON = 0.45 / double
 
 Deze parameters kan je aanpassen:
-YOUNGS = 12000 / double
+was 1200
+YOUNGS = 9000 / double
 GLOBALSTRAIN = false / bool
 LOADANGLE = 90 / double
 LOAD = 0 / double
 
-MOTILITY = 1 / double
-INELASTICITY = 500.0 / double
-NOSTICKJCM = 1000000.0 / double
-NOSTICKJCC = 5000000.0 / double
-LAMBDADUR = 24 / double
+MOTILITY = 1/ double
+INELASTICITY = 1000.0 / double
+NOSTICKJCM = 2000000.0 / double
+NOSTICKJCC = 10000000.0 / double
+LAMBDADUR = 50 / double
 
 THRESHOLDSTIFF = 15E3 / double
 STIFFSENSITIVITY = 0.0005 / double
 STIFFENINGSTIFF = 0.1 / double
 COMPRESSINGSTIFF = false / bool
+STRAINSHIFT = 0 / double;
 LAMBDADISS = 0 / double
 COLLAGEN = 10 / double
 PIXPERVOX = 5 / int
 LINEWIDTH = 2 / int
 CELLFORCES = true / bool
 DUROTAXIS = true / bool
-STRIDE = 10 / int
-WSTRIDE = 100 / int
+STRIDE = 5 / int
+WSTRIDE = 5 / int
 STRAINFIELD = true / bool
 FORCEFIELD = false / bool
 PRINCFIELD = true / bool
@@ -47,22 +51,19 @@ TWOCELL = false / bool
 DISTWOCELLS = 7 / int
 CELLCOL = true / bool
 READCELLS = false / bool
-CELLDENSITY = 0.001/ double
+CELLDENSITY = 0.005/ double
 BOUNDARYDIS = 10 / int
 NRcf = 0 / int
 COLORBAR = true / bool
-MAXCOLORBAR = 1.1 / double
+MAXCOLORBAR = 0.8 / double
 
 WIDTHCOLORBAR = 150 / int
-WRATIOPA = false / bool
-WLENGTH = false / bool
+WRATIOPA = true / bool
+WLENGTH = true / bool
 WAREA = true / bool
-WSQDIS = false / bool
-WECC = false / bool
-WANGLE = false / bool
-WSIGMA = false / bool
+WSQDIS = true / bool
+WECC = true / bool
+WANGLE = true / bool
+WSIGMA = true / bool
 WTWOCELLCONTACT = false / bool
 WTWOCELLANGLECM = false / bool
-
-
-

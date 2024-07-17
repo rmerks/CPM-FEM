@@ -50,6 +50,8 @@ Parameter::Parameter() {
   MCS = NVX*NVY;
   TARGETVOLUME = 50;
   CELLFORCE = 1;
+  CUFORCE = 30;
+  REMOVETIMECUFORCE =50;
   VOXSIZE = 0.0000025;
   NRINC = 101;
   MAXNRITER = 1000;
@@ -68,6 +70,7 @@ Parameter::Parameter() {
   STIFFSENSITIVITY = 0.0005;
   STIFFENINGSTIFF = 0.1;
   COMPRESSINGSTIFF = false;
+  STRAINSHIFT = 0;
   LAMBDADISS = 0;
   COLLAGEN = 100;
   PIXPERVOX = 5;
@@ -136,6 +139,8 @@ void Parameter::Read(const char *filename) {
   MCS = igetpar(fp, "MCS", NVX*NVY, true);
   TARGETVOLUME = igetpar(fp, "TARGETVOLUME", 50, true);
   CELLFORCE = fgetpar(fp, "CELLFORCE", 1, true);
+  CUFORCE = fgetpar(fp, "CUFORCE", 30, true);
+  REMOVETIMECUFORCE = fgetpar(fp, "REMOVETIMECUFORCE", 50, true);
   VOXSIZE = fgetpar(fp, "VOXSIZE", 0.0000025, true);
   NRINC = igetpar(fp, "NRINC", 101, true);
   MAXNRITER = igetpar(fp, "MAXNRITER", 1000, true);
@@ -153,6 +158,7 @@ void Parameter::Read(const char *filename) {
   THRESHOLDSTIFF = fgetpar(fp, "THRESHOLDSTIFF", 15E3, true);
   STIFFSENSITIVITY = fgetpar(fp, "STIFFSENSITIVITY", 0.0005, true);
   STIFFENINGSTIFF = fgetpar(fp, "STIFFENINGSTIFF", 0.1, true);
+  STRAINSHIFT = fgetpar(fp, "STRAINSHIFT", 0, true);
   COMPRESSINGSTIFF = bgetpar(fp, "COMPRESSINGSTIFF", false, true);
   LAMBDADISS = fgetpar(fp, "LAMBDADISS", 0, true);
   COLLAGEN = fgetpar(fp, "COLLAGEN", 100, true);
@@ -208,6 +214,8 @@ void Parameter::Write(ostream &os) const {
   os << " MCS = " << MCS << endl;
   os << " TARGETVOLUME = " << TARGETVOLUME << endl;
   os << " CELLFORCE = " << CELLFORCE << endl;
+  os << " CUFORCE = " << CUFORCE << endl;
+  os << " REMOVETIMECUFORCE = " << REMOVETIMECUFORCE << endl; 
   os << " VOXSIZE = " << VOXSIZE << endl;
   os << " NRINC = " << NRINC << endl;
   os << " MAXNRITER = " << MAXNRITER << endl;
@@ -225,6 +233,7 @@ void Parameter::Write(ostream &os) const {
   os << " THRESHOLDSTIFF = " << THRESHOLDSTIFF << endl;
   os << " STIFFSENSITIVITY = " << STIFFSENSITIVITY << endl;
   os << " STIFFENINGSTIFF = " << STIFFENINGSTIFF << endl;
+  os << " STRAINSHIFT = " << STRAINSHIFT << endl;
   os << " COMPRESSINGSTIFF = " << sbool(COMPRESSINGSTIFF) << endl;
   os << " LAMBDADISS = " << LAMBDADISS << endl;
   os << " COLLAGEN = " << COLLAGEN << endl;

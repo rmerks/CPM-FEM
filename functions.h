@@ -24,7 +24,7 @@ void		set_restrictions(NOD* pn);
 void 		CPM_moves(VOX* pv, NOD* pn, int* csize, int *csumx, int *csumy, int incr);
 BOOL 		splitcheckCCR(VOX* pv,  int* csize, int xt, int ttag);
 void		CalcPerimeters(VOX* pv, int* cper, int NRc);
-void		CalcLengths(VOX* pv,NOD* pn,double* clength,double* ecc,double* cangle,int NRc,int* csize,int* csumx, int* csumy);
+void		CalcLengths(VOX* pv,NOD* pn,double* clength,double* ecc,double* cangle,int NRc,int* csize,int* csumx, int* csumy, double* radialpos);
 int		check_contact(VOX* pv);
 
 
@@ -37,7 +37,7 @@ double 		calcdHstrain(NOD* pn, int xt, int xs, int pick, int ttag, int stag);
 double 		sige(double L);
 
 // cellforces.c
-void 		cell_forces(VOX* pv, NOD* pn, int* csize, int NRc);
+void 		cell_forces(VOX* pv, NOD* pn, int* csize, int NRc, bool cuforceon);
 BOOL 		CheckCellNodeConnection(VOX* pv, NOD* pn, int n1, int n2, int c);
 
 
@@ -79,6 +79,7 @@ void		write_area(int* area, int NRC, int increment, FILE* ofp);
 void		write_sqdis(double* sqdis, int NRC, int increment, FILE* ofp);
 void 		write_eccentricity(double* ecc,int NRc,int increment,FILE* ofp);
 void 		write_cangle(double* cangle,int NRc,int increment,FILE* ofp);
+void 		write_radialpos(double* radialpos,int NRc,int increment,FILE* ofp);
 void 		write_twocellcontact(int contact,int increment,FILE* ofp);
 
 // read.c

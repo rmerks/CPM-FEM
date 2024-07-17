@@ -210,14 +210,30 @@ void write_ratiopa(int* cper,int* csize,int NRc,int increment,FILE* ofp){
 void write_length(double* length,int NRc,int increment,FILE* ofp){
 
 	fprintf(ofp,"%d ",increment);
+	//fprintf(ofp ,", ");
 	for(int n=0;n<NRc;n++)
 	{
 		fprintf(ofp ,"%e ",length[n]);
+		//fprintf(ofp ,", ");
 
 	}
         fprintf(ofp,"\n");
 	//fflush(ofp);
 }
+
+void write_radialpos(double* radialpos, int NRc,int increment,FILE* ofp){
+
+	fprintf(ofp,"%d ",increment);
+	//fprintf(ofp ,", ");
+	for(int n=0;n<NRc;n++)
+	{
+		fprintf(ofp ,"%e ",radialpos[n]);
+		//fprintf(ofp ,", ");
+	}
+        fprintf(ofp,"\n");
+	//fflush(ofp);
+}
+
 
 void write_area(int* area,int NRc,int increment,FILE* ofp){
 
